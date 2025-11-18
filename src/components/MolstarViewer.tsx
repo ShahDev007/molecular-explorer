@@ -9,6 +9,7 @@ import { Color } from "molstar/lib/mol-util/color";
 import "molstar/lib/mol-plugin-ui/skin/light.scss";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export interface MolstarViewerRef {
   focusLigand: (ligandId: string) => void;
@@ -27,6 +28,7 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
   const [surfaceRef, setSurfaceRef] = useState<any>(null);
   const [hbondsRef, setHbondsRef] = useState<any>(null);
   const [structureRef, setStructureRef] = useState<any>(null);
+  const [selectedProtein, setSelectedProtein] = useState<string>("6LU7");
 
   // Get color based on toxicity level
   const getToxicityColor = (tox: "Low" | "Moderate" | "High"): Color => {
@@ -53,15 +55,35 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
       createRoot(parentRef.current).render(<Plugin plugin={pluginInstance} />);
 
       setPlugin(pluginInstance);
+    };
 
-      // Load PDB structure
+    initViewer();
+
+    return () => {
+      plugin?.dispose();
+    };
+  }, []);
+
+  // Load structure when protein selection changes
+  useEffect(() => {
+    const loadStructure = async () => {
+      if (!plugin) return;
+
+      // Clear previous structure
       try {
-        const data = await pluginInstance.builders.data.download(
-          { url: "https://files.rcsb.org/download/1VRT.pdb", isBinary: false },
+        await plugin.clear();
+      } catch (error) {
+        console.error("Error clearing structure:", error);
+      }
+
+      // Load new PDB structure
+      try {
+        const data = await plugin.builders.data.download(
+          { url: `https://files.rcsb.org/download/${selectedProtein}.pdb`, isBinary: false },
           { state: { isGhost: false } },
         );
-        const trajectory = await pluginInstance.builders.structure.parseTrajectory(data, "pdb");
-        const structure = await pluginInstance.builders.structure.hierarchy.applyPreset(trajectory, "default");
+        const trajectory = await plugin.builders.structure.parseTrajectory(data, "pdb");
+        const structure = await plugin.builders.structure.hierarchy.applyPreset(trajectory, "default");
         setStructureRef(structure);
 
         // Apply toxicity color
@@ -71,12 +93,8 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
       }
     };
 
-    initViewer();
-
-    return () => {
-      plugin?.dispose();
-    };
-  }, []);
+    loadStructure();
+  }, [plugin, selectedProtein]);
 
   // Update color when toxicity changes
   useEffect(() => {
@@ -187,6 +205,33 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
     <Card className="h-full flex flex-col">
       <div className="p-4 border-b border-border bg-gradient-to-r from-primary/5 to-secondary/5">
         <h2 className="text-xl font-semibold text-foreground mb-3">Molecular Structure Viewer</h2>
+        <div className="flex gap-3 flex-wrap items-center mb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Protein:</span>
+            <Select value={selectedProtein} onValueChange={setSelectedProtein}>
+              <SelectTrigger className="w-[140px] h-9">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="6LU7">6LU7</SelectItem>
+                <SelectItem value="1HSG">1HSG</SelectItem>
+                <SelectItem value="4YTH">4YTH</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="ml-auto flex items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Toxicity:</span>
+            <span
+              className="px-2 py-1 rounded font-medium"
+              style={{
+                backgroundColor: toxicity === "High" ? "#dc2626" : toxicity === "Moderate" ? "#f97316" : "#22c55e",
+                color: "white",
+              }}
+            >
+              {toxicity}
+            </span>
+          </div>
+        </div>
         <div className="flex gap-2 flex-wrap">
           <Button
             onClick={toggleSurface}
@@ -204,18 +249,6 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
           >
             {showHBonds ? "✓ " : ""}H-Bonds
           </Button>
-          <div className="ml-auto flex items-center gap-2 text-sm">
-            <span className="text-muted-foreground">Toxicity:</span>
-            <span
-              className="px-2 py-1 rounded font-medium"
-              style={{
-                backgroundColor: toxicity === "High" ? "#dc2626" : toxicity === "Moderate" ? "#f97316" : "#22c55e",
-                color: "white",
-              }}
-            >
-              {toxicity}
-            </span>
-          </div>
         </div>
       </div>
       <div
