@@ -9,8 +9,6 @@ import { Color } from "molstar/lib/mol-util/color";
 import "molstar/lib/mol-plugin-ui/skin/light.scss";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
 export interface MolstarViewerRef {
   focusLigand: (ligandId: string) => void;
   setToxicityColor: (toxicity: "Low" | "Moderate" | "High") => void;
@@ -18,9 +16,10 @@ export interface MolstarViewerRef {
 
 interface MolstarViewerProps {
   toxicity?: "Low" | "Moderate" | "High";
+  selectedProtein: string;
 }
 
-export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({ toxicity = "Low" }, ref) => {
+export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({ toxicity = "Low", selectedProtein }, ref) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [plugin, setPlugin] = useState<PluginUIContext | null>(null);
   const [showSurface, setShowSurface] = useState(false);
@@ -28,7 +27,6 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
   const [surfaceRef, setSurfaceRef] = useState<any>(null);
   const [hbondsRef, setHbondsRef] = useState<any>(null);
   const [structureRef, setStructureRef] = useState<any>(null);
-  const [selectedProtein, setSelectedProtein] = useState<string>("6LU7");
 
   // Get color based on toxicity level
   const getToxicityColor = (tox: "Low" | "Moderate" | "High"): Color => {
@@ -206,20 +204,7 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
       <div className="p-4 border-b border-border bg-gradient-to-r from-primary/5 to-secondary/5">
         <h2 className="text-xl font-semibold text-foreground mb-3">Molecular Structure Viewer</h2>
         <div className="flex gap-3 flex-wrap items-center mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Protein:</span>
-            <Select value={selectedProtein} onValueChange={setSelectedProtein}>
-              <SelectTrigger className="w-[140px] h-9">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="6LU7">6LU7</SelectItem>
-                <SelectItem value="1HSG">1HSG</SelectItem>
-                <SelectItem value="4YTH">4YTH</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="ml-auto flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">Toxicity:</span>
             <span
               className="px-2 py-1 rounded font-medium"
