@@ -1,25 +1,25 @@
-import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
-import { createRoot } from 'react-dom/client';
-import { DefaultPluginUISpec } from 'molstar/lib/mol-plugin-ui/spec';
-import { PluginUIContext } from 'molstar/lib/mol-plugin-ui/context';
-import { Plugin } from 'molstar/lib/mol-plugin-ui/plugin';
-import { StructureRepresentationPresetProvider } from 'molstar/lib/mol-plugin-state/builder/structure/representation-preset';
-import { StateSelection } from 'molstar/lib/mol-state';
-import { Color } from 'molstar/lib/mol-util/color';
-import 'molstar/lib/mol-plugin-ui/skin/light.scss';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
+import { createRoot } from "react-dom/client";
+import { DefaultPluginUISpec } from "molstar/lib/mol-plugin-ui/spec";
+import { PluginUIContext } from "molstar/lib/mol-plugin-ui/context";
+import { Plugin } from "molstar/lib/mol-plugin-ui/plugin";
+import { StructureRepresentationPresetProvider } from "molstar/lib/mol-plugin-state/builder/structure/representation-preset";
+import { StateSelection } from "molstar/lib/mol-state";
+import { Color } from "molstar/lib/mol-util/color";
+import "molstar/lib/mol-plugin-ui/skin/light.scss";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export interface MolstarViewerRef {
   focusLigand: (ligandId: string) => void;
-  setToxicityColor: (toxicity: 'Low' | 'Moderate' | 'High') => void;
+  setToxicityColor: (toxicity: "Low" | "Moderate" | "High") => void;
 }
 
 interface MolstarViewerProps {
-  toxicity?: 'Low' | 'Moderate' | 'High';
+  toxicity?: "Low" | "Moderate" | "High";
 }
 
-export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({ toxicity = 'Low' }, ref) => {
+export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({ toxicity = "Low" }, ref) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [plugin, setPlugin] = useState<PluginUIContext | null>(null);
   const [showSurface, setShowSurface] = useState(false);
@@ -29,11 +29,14 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
   const [structureRef, setStructureRef] = useState<any>(null);
 
   // Get color based on toxicity level
-  const getToxicityColor = (tox: 'Low' | 'Moderate' | 'High'): Color => {
+  const getToxicityColor = (tox: "Low" | "Moderate" | "High"): Color => {
     switch (tox) {
-      case 'High': return Color.fromRgb(220, 38, 38); // red
-      case 'Moderate': return Color.fromRgb(249, 115, 22); // orange
-      case 'Low': return Color.fromRgb(34, 197, 94); // green
+      case "High":
+        return Color.fromRgb(220, 38, 38); // red
+      case "Moderate":
+        return Color.fromRgb(249, 115, 22); // orange
+      case "Low":
+        return Color.fromRgb(34, 197, 94); // green
     }
   };
 
@@ -48,23 +51,23 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
 
       // Render plugin UI
       createRoot(parentRef.current).render(<Plugin plugin={pluginInstance} />);
-      
+
       setPlugin(pluginInstance);
 
       // Load PDB structure
       try {
         const data = await pluginInstance.builders.data.download(
-          { url: 'https://files.rcsb.org/download/6LU7.pdb', isBinary: false },
-          { state: { isGhost: false } }
+          { url: "https://files.rcsb.org/download/1HSG.pdb", isBinary: false },
+          { state: { isGhost: false } },
         );
-        const trajectory = await pluginInstance.builders.structure.parseTrajectory(data, 'pdb');
-        const structure = await pluginInstance.builders.structure.hierarchy.applyPreset(trajectory, 'default');
+        const trajectory = await pluginInstance.builders.structure.parseTrajectory(data, "pdb");
+        const structure = await pluginInstance.builders.structure.hierarchy.applyPreset(trajectory, "default");
         setStructureRef(structure);
 
         // Apply toxicity color
         await updateStructureColor(toxicity);
       } catch (error) {
-        console.error('Error loading PDB structure:', error);
+        console.error("Error loading PDB structure:", error);
       }
     };
 
@@ -82,15 +85,17 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
     }
   }, [toxicity, plugin, structureRef]);
 
-  const updateStructureColor = async (tox: 'Low' | 'Moderate' | 'High') => {
+  const updateStructureColor = async (tox: "Low" | "Moderate" | "High") => {
     if (!plugin) return;
-    
+
     try {
       const color = getToxicityColor(tox);
       // Update theme colors in the plugin
       const update = plugin.build();
-      const structures = plugin.state.data.select(StateSelection.Generators.root.subtree().withTag('structure-component'));
-      
+      const structures = plugin.state.data.select(
+        StateSelection.Generators.root.subtree().withTag("structure-component"),
+      );
+
       for (const s of structures) {
         update.to(s).update((old: any) => {
           if (!old?.type?.params) return old;
@@ -100,16 +105,16 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
               ...old.type,
               params: {
                 ...old.type.params,
-                colorTheme: { name: 'uniform', params: { value: color } }
-              }
-            }
+                colorTheme: { name: "uniform", params: { value: color } },
+              },
+            },
           };
         });
       }
-      
+
       await update.commit();
     } catch (error) {
-      console.error('Error updating color:', error);
+      console.error("Error updating color:", error);
     }
   };
 
@@ -123,7 +128,7 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
         setSurfaceRef(null);
         setShowSurface(false);
       } catch (error) {
-        console.error('Error removing surface:', error);
+        console.error("Error removing surface:", error);
       }
     } else {
       // Add surface - simplified approach
@@ -143,7 +148,7 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
         setHbondsRef(null);
         setShowHBonds(false);
       } catch (error) {
-        console.error('Error removing H-bonds:', error);
+        console.error("Error removing H-bonds:", error);
       }
     } else {
       // Add H-bonds - simplified approach
@@ -157,10 +162,12 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
   useImperativeHandle(ref, () => ({
     focusLigand: (ligandId: string) => {
       if (!plugin) return;
-      
+
       try {
         // Focus camera on the structure
-        const structures = plugin.state.data.select(StateSelection.Generators.root.subtree().withTag('structure-component'));
+        const structures = plugin.state.data.select(
+          StateSelection.Generators.root.subtree().withTag("structure-component"),
+        );
         if (structures.length > 0 && structures[0].obj) {
           const loci = (structures[0].obj as any).data?.boundary?.sphere;
           if (loci) {
@@ -168,12 +175,12 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
           }
         }
       } catch (error) {
-        console.error('Error focusing ligand:', error);
+        console.error("Error focusing ligand:", error);
       }
     },
-    setToxicityColor: (tox: 'Low' | 'Moderate' | 'High') => {
+    setToxicityColor: (tox: "Low" | "Moderate" | "High") => {
       updateStructureColor(tox);
-    }
+    },
   }));
 
   return (
@@ -187,7 +194,7 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
             size="sm"
             className="transition-all"
           >
-            {showSurface ? '✓ ' : ''}Pocket Surface
+            {showSurface ? "✓ " : ""}Pocket Surface
           </Button>
           <Button
             onClick={toggleHBonds}
@@ -195,15 +202,15 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
             size="sm"
             className="transition-all"
           >
-            {showHBonds ? '✓ ' : ''}H-Bonds
+            {showHBonds ? "✓ " : ""}H-Bonds
           </Button>
           <div className="ml-auto flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">Toxicity:</span>
-            <span 
+            <span
               className="px-2 py-1 rounded font-medium"
-              style={{ 
-                backgroundColor: toxicity === 'High' ? '#dc2626' : toxicity === 'Moderate' ? '#f97316' : '#22c55e',
-                color: 'white'
+              style={{
+                backgroundColor: toxicity === "High" ? "#dc2626" : toxicity === "Moderate" ? "#f97316" : "#22c55e",
+                color: "white",
               }}
             >
               {toxicity}
@@ -211,10 +218,10 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
           </div>
         </div>
       </div>
-      <div 
-        ref={parentRef} 
+      <div
+        ref={parentRef}
         className="flex-1 bg-card"
-        style={{ position: 'relative', width: '100%', height: '100%', minHeight: '500px' }}
+        style={{ position: "relative", width: "100%", height: "100%", minHeight: "500px" }}
       />
     </Card>
   );
