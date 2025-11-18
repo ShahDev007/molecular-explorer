@@ -205,20 +205,21 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
     <Card className="h-full flex flex-col">
       <div className="p-4 border-b border-border bg-gradient-to-r from-primary/5 to-secondary/5">
         <h2 className="text-xl font-semibold text-foreground mb-3">Molecular Structure Viewer</h2>
+        {/* <div className="flex gap-3 flex-wrap items-center mb-3"> */}
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Protein:</span>
+          <Select value={selectedProtein} onValueChange={setSelectedProtein}>
+            <SelectTrigger className="w-[140px] h-9">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="6LU7">6LU7</SelectItem>
+              <SelectItem value="1HSG">1HSG</SelectItem>
+              <SelectItem value="4YTH">4YTH</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <div className="flex gap-3 flex-wrap items-center mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Protein:</span>
-            <Select value={selectedProtein} onValueChange={setSelectedProtein}>
-              <SelectTrigger className="w-[140px] h-9">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="6LU7">6LU7</SelectItem>
-                <SelectItem value="1HSG">1HSG</SelectItem>
-                <SelectItem value="4YTH">4YTH</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
           <div className="ml-auto flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">Toxicity:</span>
             <span
