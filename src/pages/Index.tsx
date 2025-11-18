@@ -18,12 +18,14 @@ const Index = () => {
   const [assayData, setAssayData] = useState<AssayData[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedToxicity, setSelectedToxicity] = useState<'Low' | 'Moderate' | 'High'>('Low');
+  const [selectedProtein, setSelectedProtein] = useState<string>('6LU7');
   const viewerRef = useRef<MolstarViewerRef>(null);
 
   useEffect(() => {
     const loadCSV = async () => {
+      setLoading(true);
       try {
-        const response = await fetch('/data/sample_assay.csv');
+        const response = await fetch(`/data/${selectedProtein}_assay.csv`);
         const csvText = await response.text();
         
         Papa.parse(csvText, {
@@ -46,7 +48,7 @@ const Index = () => {
     };
 
     loadCSV();
-  }, []);
+  }, [selectedProtein]);
 
   if (loading) {
     return (
@@ -80,7 +82,12 @@ const Index = () => {
           <ResizablePanel defaultSize={50} minSize={30}>
             <ScrollArea className="h-full">
               <div className="p-4">
-                <MolstarViewer ref={viewerRef} toxicity={selectedToxicity} />
+                <MolstarViewer 
+                  ref={viewerRef} 
+                  toxicity={selectedToxicity}
+                  selectedProtein={selectedProtein}
+                  onProteinChange={setSelectedProtein}
+                />
               </div>
             </ScrollArea>
           </ResizablePanel>
