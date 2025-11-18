@@ -203,34 +203,20 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
 
   return (
     <Card className="h-full flex flex-col relative z-0">
-      <div className="p-4 border-b border-border bg-gradient-to-r from-primary/5 to-secondary/5 relative z-10">
-        <h2 className="text-xl font-semibold text-foreground mb-3">Molecular Structure Viewer</h2>
-        <div className="flex gap-3 flex-wrap items-center mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Protein:</span>
-            <Select value={selectedProtein} onValueChange={setSelectedProtein}>
-              <SelectTrigger className="w-[140px] h-9">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="z-[10000]">
-                <SelectItem value="6LU7">6LU7</SelectItem>
-                <SelectItem value="1HSG">1HSG</SelectItem>
-                <SelectItem value="4YTH">4YTH</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="ml-auto flex items-center gap-2 text-sm">
-            <span className="text-muted-foreground">Toxicity:</span>
-            <span
-              className="px-2 py-1 rounded font-medium"
-              style={{
-                backgroundColor: toxicity === "High" ? "#dc2626" : toxicity === "Moderate" ? "#f97316" : "#22c55e",
-                color: "white",
-              }}
-            >
-              {toxicity}
-            </span>
-          </div>
+      <div className="p-4 border-b border-border bg-gradient-to-r from-primary/5 to-secondary/5 relative z-10 flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-foreground">Molecular Structure Viewer</h2>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Protein:</span>
+          <Select value={selectedProtein} onValueChange={setSelectedProtein}>
+            <SelectTrigger className="w-[140px] h-9">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="z-[10000]">
+              <SelectItem value="6LU7">6LU7</SelectItem>
+              <SelectItem value="1HSG">1HSG</SelectItem>
+              <SelectItem value="4YTH">4YTH</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div
