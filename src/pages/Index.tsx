@@ -5,6 +5,7 @@ import { AssayTable } from '@/components/AssayTable';
 import { StatsPanel } from '@/components/StatsPanel';
 import { ToxicityPieChart } from '@/components/ToxicityPieChart';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Loader2 } from 'lucide-react';
 
 interface AssayData {
@@ -86,17 +87,19 @@ const Index = () => {
 
           {/* Right Panel - Data Panels */}
           <ResizablePanel defaultSize={50} minSize={30}>
-            <div className="h-full overflow-auto p-4 space-y-6">
-              <AssayTable 
-                data={assayData}
-                onRowClick={(row) => {
-                  setSelectedToxicity(row.toxicity);
-                  viewerRef.current?.focusLigand(row.compoundId);
-                }}
-              />
-              <StatsPanel data={assayData} />
-              <ToxicityPieChart data={assayData} />
-            </div>
+            <ScrollArea className="h-full">
+              <div className="p-4 space-y-6">
+                <AssayTable 
+                  data={assayData}
+                  onRowClick={(row) => {
+                    setSelectedToxicity(row.toxicity);
+                    viewerRef.current?.focusLigand(row.compoundId);
+                  }}
+                />
+                <StatsPanel data={assayData} />
+                <ToxicityPieChart data={assayData} />
+              </div>
+            </ScrollArea>
           </ResizablePanel>
         </ResizablePanelGroup>
       </main>
