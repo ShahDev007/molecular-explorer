@@ -76,7 +76,7 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 h-[calc(100vh-140px)]">
+      <main className="container mx-auto px-4 py-8 h-[calc(100vh-200px)]">
         <ResizablePanelGroup direction="horizontal" className="rounded-lg border">
           {/* Left Panel - Molecular Viewer */}
           <ResizablePanel defaultSize={50} minSize={30}>
@@ -112,6 +112,15 @@ const Index = () => {
           </ResizablePanel>
         </ResizablePanelGroup>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-border bg-card/50 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-4">
+          <p className="text-center text-sm text-muted-foreground">
+            © 2025 <span className="font-semibold text-foreground">Your Name</span> - All rights reserved
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
