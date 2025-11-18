@@ -206,7 +206,7 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
       <div className="p-4 border-b border-border bg-gradient-to-r from-primary/5 to-secondary/5">
         <h2 className="text-xl font-semibold text-foreground mb-3">Molecular Structure Viewer</h2>
         {/* <div className="flex gap-3 flex-wrap items-center mb-3"> */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mb-5">
           <span className="text-sm text-muted-foreground">Protein:</span>
           <Select value={selectedProtein} onValueChange={setSelectedProtein}>
             <SelectTrigger className="w-[140px] h-9">
