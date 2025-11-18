@@ -10,6 +10,7 @@ interface AssayData {
 
 interface AssayTableProps {
   data: AssayData[];
+  onRowClick?: (row: AssayData) => void;
 }
 
 const getToxicityColor = (toxicity: string) => {
@@ -25,7 +26,7 @@ const getToxicityColor = (toxicity: string) => {
   }
 };
 
-export const AssayTable = ({ data }: AssayTableProps) => {
+export const AssayTable = ({ data, onRowClick }: AssayTableProps) => {
   return (
     <Card className="overflow-hidden">
       <div className="p-4 border-b border-border bg-gradient-to-r from-primary/5 to-secondary/5">
@@ -42,7 +43,11 @@ export const AssayTable = ({ data }: AssayTableProps) => {
         </TableHeader>
         <TableBody>
           {data.map((row) => (
-            <TableRow key={row.compoundId} className="hover:bg-muted/30 transition-colors">
+            <TableRow 
+              key={row.compoundId} 
+              className="hover:bg-muted/30 transition-colors cursor-pointer"
+              onClick={() => onRowClick?.(row)}
+            >
               <TableCell className="font-mono font-medium">{row.compoundId}</TableCell>
               <TableCell>{row.ic50.toFixed(1)}</TableCell>
               <TableCell>
