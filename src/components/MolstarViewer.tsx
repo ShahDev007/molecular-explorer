@@ -7,8 +7,6 @@ import { StructureRepresentationPresetProvider } from "molstar/lib/mol-plugin-st
 import { StateSelection } from "molstar/lib/mol-state";
 import { Color } from "molstar/lib/mol-util/color";
 import "molstar/lib/mol-plugin-ui/skin/light.scss";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export interface MolstarViewerRef {
@@ -23,10 +21,6 @@ interface MolstarViewerProps {
 export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({ toxicity = "Low" }, ref) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [plugin, setPlugin] = useState<PluginUIContext | null>(null);
-  const [showSurface, setShowSurface] = useState(false);
-  const [showHBonds, setShowHBonds] = useState(false);
-  const [surfaceRef, setSurfaceRef] = useState<any>(null);
-  const [hbondsRef, setHbondsRef] = useState<any>(null);
   const [structureRef, setStructureRef] = useState<any>(null);
   const [selectedProtein, setSelectedProtein] = useState<string>("6LU7");
 
@@ -136,46 +130,6 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
     }
   };
 
-  const toggleSurface = async () => {
-    if (!plugin) return;
-
-    if (showSurface && surfaceRef) {
-      // Remove surface
-      try {
-        await plugin.build().delete(surfaceRef).commit();
-        setSurfaceRef(null);
-        setShowSurface(false);
-      } catch (error) {
-        console.error("Error removing surface:", error);
-      }
-    } else {
-      // Add surface - simplified approach
-      setShowSurface(true);
-      // Note: Full Mol* surface implementation requires complex API calls
-      // This is a placeholder that toggles the state
-    }
-  };
-
-  const toggleHBonds = async () => {
-    if (!plugin) return;
-
-    if (showHBonds && hbondsRef) {
-      // Remove H-bonds
-      try {
-        await plugin.build().delete(hbondsRef).commit();
-        setHbondsRef(null);
-        setShowHBonds(false);
-      } catch (error) {
-        console.error("Error removing H-bonds:", error);
-      }
-    } else {
-      // Add H-bonds - simplified approach
-      setShowHBonds(true);
-      // Note: Full Mol* H-bonds implementation requires complex API calls
-      // This is a placeholder that toggles the state
-    }
-  };
-
   // Expose methods via ref
   useImperativeHandle(ref, () => ({
     focusLigand: (ligandId: string) => {
@@ -202,27 +156,23 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
   }));
 
   return (
-    <Card className="h-full flex flex-col relative z-0">
-      <div className="p-4 border-b border-border bg-gradient-to-r from-primary/5 to-secondary/5 relative z-10">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-foreground">Molecular Structure Viewer</h2>
-          <Select value={selectedProtein} onValueChange={setSelectedProtein}>
-            <SelectTrigger className="w-[140px] h-9">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="z-[10000]">
-              <SelectItem value="6LU7">6LU7</SelectItem>
-              <SelectItem value="1HSG">1HSG</SelectItem>
-              <SelectItem value="4YTH">4YTH</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="h-full relative">
+      <div className="absolute top-4 right-4 z-[1000]">
+        <Select value={selectedProtein} onValueChange={setSelectedProtein}>
+          <SelectTrigger className="w-[140px] h-9 bg-background">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent className="z-[10000]">
+            <SelectItem value="6LU7">6LU7</SelectItem>
+            <SelectItem value="1HSG">1HSG</SelectItem>
+            <SelectItem value="4YTH">4YTH</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div
         ref={parentRef}
-        className="flex-1 bg-card"
         style={{ position: "relative", width: "100%", height: "100%", minHeight: "500px" }}
       />
-    </Card>
+    </div>
   );
 });
