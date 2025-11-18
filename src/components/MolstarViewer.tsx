@@ -28,7 +28,7 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
   const [surfaceRef, setSurfaceRef] = useState<any>(null);
   const [hbondsRef, setHbondsRef] = useState<any>(null);
   const [structureRef, setStructureRef] = useState<any>(null);
-  const [selectedProtein, setSelectedProtein] = useState<string>("6LU7");
+  const [selectedProtein, setSelectedProtein] = useState<string>("1VRT");
 
   // Get color based on toxicity level
   const getToxicityColor = (tox: "Low" | "Moderate" | "High"): Color => {
@@ -213,9 +213,9 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="6LU7">6LU7</SelectItem>
-              <SelectItem value="1HSG">1HSG</SelectItem>
-              <SelectItem value="4YTH">4YTH</SelectItem>
+              <SelectItem value="1VRT">1VRT – HIV-1 Reverse Transcriptase</SelectItem>
+              <SelectItem value="4YTH">4YTH – JAK1 Kinase</SelectItem>
+              <SelectItem value="5Y6H">5Y6H – CDK9 Kinase</SelectItem>
             </SelectContent>
           </Select>
         </div>
