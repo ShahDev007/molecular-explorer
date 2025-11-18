@@ -216,6 +216,9 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
               <SelectItem value="1VRT">1VRT – HIV-1 Reverse Transcriptase</SelectItem>
               <SelectItem value="4YTH">4YTH – JAK1 Kinase</SelectItem>
               <SelectItem value="5Y6H">5Y6H – CDK9 Kinase</SelectItem>
+              <SelectItem value="4YTH">4YTH</SelectItem>
+              <SelectItem value="1HSG">1HSG</SelectItem>
+              <SelectItem value="6LU7">6LU7</SelectItem>
             </SelectContent>
           </Select>
         </div>
