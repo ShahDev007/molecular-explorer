@@ -78,9 +78,11 @@ const Index = () => {
         <ResizablePanelGroup direction="horizontal" className="rounded-lg border">
           {/* Left Panel - Molecular Viewer */}
           <ResizablePanel defaultSize={50} minSize={30}>
-            <div className="h-full p-4">
-              <MolstarViewer ref={viewerRef} toxicity={selectedToxicity} />
-            </div>
+            <ScrollArea className="h-full">
+              <div className="p-4">
+                <MolstarViewer ref={viewerRef} toxicity={selectedToxicity} />
+              </div>
+            </ScrollArea>
           </ResizablePanel>
 
           <ResizableHandle withHandle />
