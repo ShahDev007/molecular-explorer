@@ -210,13 +210,15 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
         <div className="flex items-center gap-2 mb-5">
           <span className="text-sm text-muted-foreground">Protein:</span>
           <Select value={selectedProtein} onValueChange={onProteinChange}>
-            <SelectTrigger className="w-[180px] h-9">
+            <SelectTrigger className="w-[220px] h-9">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="6LU7">6LU7 - SARS-CoV-2</SelectItem>
+              <SelectItem value="6LU7">6LU7 - SARS-CoV-2 Main Protease</SelectItem>
               <SelectItem value="1HSG">1HSG - HIV Protease</SelectItem>
-              <SelectItem value="4YTH">4YTH - Kinase</SelectItem>
+              <SelectItem value="4YTH">4YTH - JAK1 Kinase</SelectItem>
+              <SelectItem value="1VRT">1VRT - HIV-1 Reverse Transcriptase</SelectItem>
+              <SelectItem value="5Y6H">5Y6H - CDK9 Kinase</SelectItem>
             </SelectContent>
           </Select>
         </div>
