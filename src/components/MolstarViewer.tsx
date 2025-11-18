@@ -57,7 +57,7 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
       // Load PDB structure
       try {
         const data = await pluginInstance.builders.data.download(
-          { url: "https://files.rcsb.org/download/1HSG.pdb", isBinary: false },
+          { url: "https://files.rcsb.org/download/1VRT.pdb", isBinary: false },
           { state: { isGhost: false } },
         );
         const trajectory = await pluginInstance.builders.structure.parseTrajectory(data, "pdb");
