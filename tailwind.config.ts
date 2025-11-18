@@ -47,6 +47,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        toxicity: {
+          low: "hsl(var(--toxicity-low))",
+          moderate: "hsl(var(--toxicity-moderate))",
+          high: "hsl(var(--toxicity-high))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
