@@ -232,24 +232,6 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
             </span>
           </div>
         </div>
-        <div className="flex gap-2 flex-wrap">
-          <Button
-            onClick={toggleSurface}
-            variant={showSurface ? "default" : "outline"}
-            size="sm"
-            className="transition-all"
-          >
-            {showSurface ? "✓ " : ""}Pocket Surface
-          </Button>
-          <Button
-            onClick={toggleHBonds}
-            variant={showHBonds ? "default" : "outline"}
-            size="sm"
-            className="transition-all"
-          >
-            {showHBonds ? "✓ " : ""}H-Bonds
-          </Button>
-        </div>
       </div>
       <div
         ref={parentRef}
