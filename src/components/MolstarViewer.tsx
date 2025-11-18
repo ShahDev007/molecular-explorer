@@ -18,9 +18,11 @@ export interface MolstarViewerRef {
 
 interface MolstarViewerProps {
   toxicity?: "Low" | "Moderate" | "High";
+  selectedProtein: string;
+  onProteinChange: (protein: string) => void;
 }
 
-export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({ toxicity = "Low" }, ref) => {
+export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({ toxicity = "Low", selectedProtein, onProteinChange }, ref) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [plugin, setPlugin] = useState<PluginUIContext | null>(null);
   const [showSurface, setShowSurface] = useState(false);
@@ -28,7 +30,6 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
   const [surfaceRef, setSurfaceRef] = useState<any>(null);
   const [hbondsRef, setHbondsRef] = useState<any>(null);
   const [structureRef, setStructureRef] = useState<any>(null);
-  const [selectedProtein, setSelectedProtein] = useState<string>("1VRT");
 
   // Get color based on toxicity level
   const getToxicityColor = (tox: "Low" | "Moderate" | "High"): Color => {
@@ -208,17 +209,14 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
         {/* <div className="flex gap-3 flex-wrap items-center mb-3"> */}
         <div className="flex items-center gap-2 mb-5">
           <span className="text-sm text-muted-foreground">Protein:</span>
-          <Select value={selectedProtein} onValueChange={setSelectedProtein}>
-            <SelectTrigger className="w-[140px] h-9">
+          <Select value={selectedProtein} onValueChange={onProteinChange}>
+            <SelectTrigger className="w-[180px] h-9">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1VRT">1VRT – HIV-1 Reverse Transcriptase</SelectItem>
-              <SelectItem value="4YTH">4YTH – JAK1 Kinase</SelectItem>
-              <SelectItem value="5Y6H">5Y6H – CDK9 Kinase</SelectItem>
-              <SelectItem value="4YTH">4YTH</SelectItem>
-              <SelectItem value="1HSG">1HSG</SelectItem>
-              <SelectItem value="6LU7">6LU7</SelectItem>
+              <SelectItem value="6LU7">6LU7 - SARS-CoV-2</SelectItem>
+              <SelectItem value="1HSG">1HSG - HIV Protease</SelectItem>
+              <SelectItem value="4YTH">4YTH - Kinase</SelectItem>
             </SelectContent>
           </Select>
         </div>
