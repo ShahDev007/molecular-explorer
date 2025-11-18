@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { createPluginUI } from 'molstar/lib/mol-plugin-ui';
+import { createRoot } from 'react-dom/client';
 import { DefaultPluginUISpec } from 'molstar/lib/mol-plugin-ui/spec';
+import { PluginUIContext } from 'molstar/lib/mol-plugin-ui/context';
+import { Plugin } from 'molstar/lib/mol-plugin-ui/plugin';
 import 'molstar/lib/mol-plugin-ui/skin/light.scss';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import type { PluginUIContext } from 'molstar/lib/mol-plugin-ui/context';
 
 export const MolstarViewer = () => {
   const parentRef = useRef<HTMLDivElement>(null);
@@ -16,11 +17,13 @@ export const MolstarViewer = () => {
     const initViewer = async () => {
       if (!parentRef.current) return;
 
-      const pluginInstance = await createPluginUI({
-        target: parentRef.current,
-        spec: DefaultPluginUISpec(),
-        render: undefined
-      });
+      // Create plugin context
+      const spec = DefaultPluginUISpec();
+      const pluginInstance = new PluginUIContext(spec);
+      await pluginInstance.init();
+
+      // Render plugin UI
+      createRoot(parentRef.current).render(<Plugin plugin={pluginInstance} />);
       
       setPlugin(pluginInstance);
 
