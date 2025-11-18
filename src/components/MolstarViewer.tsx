@@ -21,6 +21,7 @@ interface MolstarViewerProps {
 
 export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({ toxicity = "Low", selectedProtein }, ref) => {
   const parentRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<any>(null);
   const [plugin, setPlugin] = useState<PluginUIContext | null>(null);
   const [showSurface, setShowSurface] = useState(false);
   const [showHBonds, setShowHBonds] = useState(false);
@@ -49,8 +50,11 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
       const pluginInstance = new PluginUIContext(spec);
       await pluginInstance.init();
 
-      // Render plugin UI
-      createRoot(parentRef.current).render(<Plugin plugin={pluginInstance} />);
+      // Render plugin UI - only create root once
+      if (!rootRef.current) {
+        rootRef.current = createRoot(parentRef.current);
+      }
+      rootRef.current.render(<Plugin plugin={pluginInstance} />);
 
       setPlugin(pluginInstance);
     };
@@ -65,7 +69,7 @@ export const MolstarViewer = forwardRef<MolstarViewerRef, MolstarViewerProps>(({
   // Load structure when protein selection changes
   useEffect(() => {
     const loadStructure = async () => {
-      if (!plugin) return;
+      if (!plugin || !selectedProtein) return;
 
       // Clear previous structure
       try {
