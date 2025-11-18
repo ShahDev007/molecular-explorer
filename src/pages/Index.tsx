@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Papa from 'papaparse';
-import { MolstarViewer } from '@/components/MolstarViewer';
+import { MolstarViewer, MolstarViewerRef } from '@/components/MolstarViewer';
 import { AssayTable } from '@/components/AssayTable';
 import { StatsPanel } from '@/components/StatsPanel';
 import { ToxicityPieChart } from '@/components/ToxicityPieChart';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import { Loader2 } from 'lucide-react';
 
 interface AssayData {
@@ -15,6 +16,8 @@ interface AssayData {
 const Index = () => {
   const [assayData, setAssayData] = useState<AssayData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedToxicity, setSelectedToxicity] = useState<'Low' | 'Moderate' | 'High'>('Low');
+  const viewerRef = useRef<MolstarViewerRef>(null);
 
   useEffect(() => {
     const loadCSV = async () => {
@@ -70,20 +73,32 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left Column - Molecular Viewer */}
-          <div className="lg:col-span-1">
-            <MolstarViewer />
-          </div>
+      <main className="container mx-auto px-4 py-8 h-[calc(100vh-140px)]">
+        <ResizablePanelGroup direction="horizontal" className="rounded-lg border">
+          {/* Left Panel - Molecular Viewer */}
+          <ResizablePanel defaultSize={50} minSize={30}>
+            <div className="h-full p-4">
+              <MolstarViewer ref={viewerRef} toxicity={selectedToxicity} />
+            </div>
+          </ResizablePanel>
 
-          {/* Right Column - Data Panels */}
-          <div className="lg:col-span-1 space-y-6">
-            <AssayTable data={assayData} />
-            <StatsPanel data={assayData} />
-            <ToxicityPieChart data={assayData} />
-          </div>
-        </div>
+          <ResizableHandle withHandle />
+
+          {/* Right Panel - Data Panels */}
+          <ResizablePanel defaultSize={50} minSize={30}>
+            <div className="h-full overflow-auto p-4 space-y-6">
+              <AssayTable 
+                data={assayData}
+                onRowClick={(row) => {
+                  setSelectedToxicity(row.toxicity);
+                  viewerRef.current?.focusLigand(row.compoundId);
+                }}
+              />
+              <StatsPanel data={assayData} />
+              <ToxicityPieChart data={assayData} />
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </main>
     </div>
   );
