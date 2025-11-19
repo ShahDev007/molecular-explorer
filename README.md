@@ -41,7 +41,7 @@ An interactive web application for visualizing and analyzing molecular structure
 
 ```bash
 # Clone the repository
-git clone <YOUR_GIT_URL>
+git clone https://github.com/ShahDev007/molecular-explorer .
 
 # Navigate to project directory
 cd <YOUR_PROJECT_NAME>
@@ -145,7 +145,6 @@ This creates an optimized production build in the `dist/` directory.
 ## 🚀 Deployment
 
 This project can be deployed to:
-- **Lovable Platform**: Click "Publish" in the Lovable editor
 - **Vercel/Netlify**: Connect your GitHub repository for automatic deployments
 - **GitHub Pages**: Use the build output from `dist/`
 
@@ -161,15 +160,11 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 **Dev Shah**
 
-- Built with [Lovable](https://lovable.dev)
-
 ## 🙏 Acknowledgments
 
 - [Mol*](https://molstar.org/) for the molecular visualization library
 - [RCSB PDB](https://www.rcsb.org/) for protein structure data
 - [shadcn/ui](https://ui.shadcn.com/) for UI components
-
-## 📞 Support
 
 For support, please open an issue in the GitHub repository.
 
