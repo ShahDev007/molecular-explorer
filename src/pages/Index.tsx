@@ -124,10 +124,10 @@ const Index = () => {
               href="https://github.com/ShahDev007/molecular-explorer"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="View source on GitHub"
             >
-              <Github className="h-4 w-4" /> GitHub
+              GitHub <Github className="h-4 w-4" />
             </a>
           </div>
         </div>
