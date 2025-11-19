@@ -9,7 +9,7 @@ An interactive web application for visualizing and analyzing molecular structure
 
 ## ✨ Features
 
-- **Interactive 3D Molecular Visualization**: Powered by Mol* for high-quality protein structure rendering
+- **Interactive 3D-Molecular Visualization**: Powered by Mol* for high-quality protein structure rendering
 - **Multiple Protein Support**: Explore different protein structures (6LU7, 1HSG, 1VRT, 4YTH, 5Y6H)
 - **Toxicity-Based Coloring**: Visual representation of compound toxicity levels (Low, Moderate, High)
 - **Comprehensive Data Analysis**: 
