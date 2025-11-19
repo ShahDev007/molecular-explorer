@@ -1,73 +1,178 @@
-# Welcome to your Lovable project
+# Molecular Assay Explorer
 
-## Project info
+An interactive web application for visualizing and analyzing molecular structures and compound assay data. Built with React and Mol*, this tool enables researchers to explore protein-ligand interactions, toxicity profiles, and IC50 values in an intuitive interface.
 
-**URL**: https://lovable.dev/projects/914fa1fd-cd6c-433c-b865-b2debc1718a9
+![Molecular Assay Explorer](https://img.shields.io/badge/Built%20with-Lovable-ff69b4)
+![React](https://img.shields.io/badge/React-18.3.1-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+- **Interactive 3D Molecular Visualization**: Powered by Mol* for high-quality protein structure rendering
+- **Multiple Protein Support**: Explore different protein structures (6LU7, 1HSG, 1VRT, 4YTH, 5Y6H)
+- **Toxicity-Based Coloring**: Visual representation of compound toxicity levels (Low, Moderate, High)
+- **Comprehensive Data Analysis**: 
+  - Sortable assay data table with compound IDs and IC50 values
+  - Statistical summary panel
+  - Toxicity distribution pie chart
+- **Responsive Design**: Split-panel interface with resizable sections
+- **Real-time Ligand Focusing**: Click on compounds to focus on their molecular structure
 
-**Use Lovable**
+## 🚀 Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/914fa1fd-cd6c-433c-b865-b2debc1718a9) and start prompting.
+- **Frontend Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS + shadcn/ui components
+- **Molecular Visualization**: Mol* (Molstar)
+- **Data Parsing**: PapaParse for CSV processing
+- **Charts**: Recharts for data visualization
+- **State Management**: React Hooks
+- **Routing**: React Router v6
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📦 Installation
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 18+ and npm installed
+- Git
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Setup
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# Navigate to project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🏗️ Project Structure
 
-**Use GitHub Codespaces**
+```
+molecular-assay-explorer/
+├── public/
+│   └── data/              # CSV assay data files
+│       ├── 6LU7_assay.csv
+│       ├── 1HSG_assay.csv
+│       ├── 1VRT_assay.csv
+│       ├── 4YTH_assay.csv
+│       └── 5Y6H_assay.csv
+├── src/
+│   ├── components/
+│   │   ├── AssayTable.tsx        # Compound data table
+│   │   ├── MolstarViewer.tsx     # 3D molecular viewer
+│   │   ├── StatsPanel.tsx        # Statistics panel
+│   │   ├── ToxicityPieChart.tsx  # Toxicity distribution chart
+│   │   └── ui/                   # shadcn/ui components
+│   ├── pages/
+│   │   ├── Index.tsx             # Main application page
+│   │   └── NotFound.tsx          # 404 page
+│   ├── App.tsx                   # Root component
+│   ├── main.tsx                  # Entry point
+│   └── index.css                 # Global styles
+├── tailwind.config.ts
+├── vite.config.ts
+└── package.json
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📊 Data Format
 
-## What technologies are used for this project?
+The application reads CSV files with the following format:
 
-This project is built with:
+```csv
+Compound ID,IC50 (nM),Toxicity
+CHEMBL123456,45.2,Low
+CHEMBL789012,150.8,Moderate
+CHEMBL345678,890.5,High
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Adding New Proteins
 
-## How can I deploy this project?
+1. Add your CSV file to `public/data/` following the naming convention: `{PROTEIN_ID}_assay.csv`
+2. Update the protein selector in `MolstarViewer.tsx` to include your new protein
+3. Ensure the PDB structure is available (fetched from RCSB PDB)
 
-Simply open [Lovable](https://lovable.dev/projects/914fa1fd-cd6c-433c-b865-b2debc1718a9) and click on Share -> Publish.
+## 🎨 Features in Detail
 
-## Can I connect a custom domain to my Lovable project?
+### Molecular Viewer
+- Load protein structures from PDB
+- Color ligands by toxicity level
+- Toggle binding pocket surface visualization
+- Toggle hydrogen bond display
+- Camera controls for rotation and zoom
 
-Yes, you can!
+### Data Analysis
+- **IC50 Values**: Half-maximal inhibitory concentration in nanomolar units
+- **Toxicity Levels**: Categorized as Low, Moderate, or High
+- **Interactive Table**: Click rows to focus on specific compounds in 3D viewer
+- **Statistics**: Real-time calculation of mean, median, min, and max IC50 values
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🛠️ Development
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Available Scripts
+
+```bash
+# Development server with hot reload
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
+```
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+This creates an optimized production build in the `dist/` directory.
+
+## 🚀 Deployment
+
+This project can be deployed to:
+- **Lovable Platform**: Click "Publish" in the Lovable editor
+- **Vercel/Netlify**: Connect your GitHub repository for automatic deployments
+- **GitHub Pages**: Use the build output from `dist/`
+
+## 📝 License
+
+Copyright © 2025 Dev Shah. All rights reserved.
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
+
+## 👨‍💻 Author
+
+**Dev Shah**
+
+- Built with [Lovable](https://lovable.dev)
+
+## 🙏 Acknowledgments
+
+- [Mol*](https://molstar.org/) for the molecular visualization library
+- [RCSB PDB](https://www.rcsb.org/) for protein structure data
+- [shadcn/ui](https://ui.shadcn.com/) for UI components
+
+## 📞 Support
+
+For support, please open an issue in the GitHub repository.
+
+---
+
+Made with ❤️ using [Lovable](https://lovable.dev)
