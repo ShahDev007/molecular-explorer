@@ -2,7 +2,6 @@
 
 An interactive web application for visualizing and analyzing molecular structures and compound assay data. Built with React and Mol*, this tool enables researchers to explore protein-ligand interactions, toxicity profiles, and IC50 values in an intuitive interface.
 
-![Molecular Assay Explorer](https://img.shields.io/badge/Built%20with-Lovable-ff69b4)
 ![React](https://img.shields.io/badge/React-18.3.1-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -167,7 +166,3 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 - [shadcn/ui](https://ui.shadcn.com/) for UI components
 
 For support, please open an issue in the GitHub repository.
-
----
-
-Made with ❤️ using [Lovable](https://lovable.dev)
