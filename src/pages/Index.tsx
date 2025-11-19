@@ -66,7 +66,7 @@ const Index = () => {
       {/* Header */}
       <header className="border-b border-border bg-card shadow-sm">
         <div className="container mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-green-600">
             Molecular Assay Explorer
           </h1>
           <p className="text-muted-foreground mt-2">
