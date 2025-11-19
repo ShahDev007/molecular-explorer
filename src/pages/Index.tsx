@@ -6,7 +6,7 @@ import { StatsPanel } from "@/components/StatsPanel";
 import { ToxicityPieChart } from "@/components/ToxicityPieChart";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2 } from "lucide-react";
+import { Loader2, Github } from "lucide-react";
 
 interface AssayData {
   compoundId: string;
@@ -116,9 +116,20 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t border-border bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
-          <p className="text-center text-sm text-muted-foreground">
-            © 2025 <span className="font-semibold text-foreground">Dev Shah</span> - All rights reserved
-          </p>
+          <div className="flex items-center justify-center gap-2">
+            <p className="text-center text-sm text-muted-foreground">
+              © 2025 <span className="font-semibold text-foreground">Dev Shah</span> - All rights reserved
+            </p>
+            <a
+              href="https://github.com/ShahDev007/molecular-explorer"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="View source on GitHub"
+            >
+              <Github className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </footer>
     </div>
