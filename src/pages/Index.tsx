@@ -127,7 +127,7 @@ const Index = () => {
               className="text-muted-foreground hover:text-foreground transition-colors"
               aria-label="View source on GitHub"
             >
-              <Github className="h-4 w-4" />
+              <Github className="h-4 w-4" /> GitHub
             </a>
           </div>
         </div>
