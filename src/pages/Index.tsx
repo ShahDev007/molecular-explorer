@@ -1,24 +1,24 @@
-import { useState, useEffect, useRef } from 'react';
-import Papa from 'papaparse';
-import { MolstarViewer, MolstarViewerRef } from '@/components/MolstarViewer';
-import { AssayTable } from '@/components/AssayTable';
-import { StatsPanel } from '@/components/StatsPanel';
-import { ToxicityPieChart } from '@/components/ToxicityPieChart';
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Loader2 } from 'lucide-react';
+import { useState, useEffect, useRef } from "react";
+import Papa from "papaparse";
+import { MolstarViewer, MolstarViewerRef } from "@/components/MolstarViewer";
+import { AssayTable } from "@/components/AssayTable";
+import { StatsPanel } from "@/components/StatsPanel";
+import { ToxicityPieChart } from "@/components/ToxicityPieChart";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Loader2 } from "lucide-react";
 
 interface AssayData {
   compoundId: string;
   ic50: number;
-  toxicity: 'Low' | 'Moderate' | 'High';
+  toxicity: "Low" | "Moderate" | "High";
 }
 
 const Index = () => {
   const [assayData, setAssayData] = useState<AssayData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedToxicity, setSelectedToxicity] = useState<'Low' | 'Moderate' | 'High'>('Low');
-  const [selectedProtein, setSelectedProtein] = useState<string>('6LU7');
+  const [selectedToxicity, setSelectedToxicity] = useState<"Low" | "Moderate" | "High">("Low");
+  const [selectedProtein, setSelectedProtein] = useState<string>("6LU7");
   const viewerRef = useRef<MolstarViewerRef>(null);
 
   useEffect(() => {
@@ -27,22 +27,22 @@ const Index = () => {
       try {
         const response = await fetch(`/data/${selectedProtein}_assay.csv`);
         const csvText = await response.text();
-        
+
         Papa.parse(csvText, {
           header: true,
           skipEmptyLines: true,
           complete: (results) => {
             const parsed = results.data.map((row: any) => ({
-              compoundId: row['Compound ID'],
-              ic50: parseFloat(row['IC50 (nM)']),
-              toxicity: row['Toxicity'] as 'Low' | 'Moderate' | 'High',
+              compoundId: row["Compound ID"],
+              ic50: parseFloat(row["IC50 (nM)"]),
+              toxicity: row["Toxicity"] as "Low" | "Moderate" | "High",
             }));
             setAssayData(parsed);
             setLoading(false);
           },
         });
       } catch (error) {
-        console.error('Error loading CSV:', error);
+        console.error("Error loading CSV:", error);
         setLoading(false);
       }
     };
@@ -82,8 +82,8 @@ const Index = () => {
           <ResizablePanel defaultSize={50} minSize={30}>
             <ScrollArea className="h-full">
               <div className="p-4">
-                <MolstarViewer 
-                  ref={viewerRef} 
+                <MolstarViewer
+                  ref={viewerRef}
                   toxicity={selectedToxicity}
                   selectedProtein={selectedProtein}
                   onProteinChange={setSelectedProtein}
@@ -98,7 +98,7 @@ const Index = () => {
           <ResizablePanel defaultSize={50} minSize={30}>
             <ScrollArea className="h-full">
               <div className="p-4 space-y-6">
-                <AssayTable 
+                <AssayTable
                   data={assayData}
                   onRowClick={(row) => {
                     setSelectedToxicity(row.toxicity);
@@ -117,7 +117,7 @@ const Index = () => {
       <footer className="border-t border-border bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
           <p className="text-center text-sm text-muted-foreground">
-            © 2025 <span className="font-semibold text-foreground">Your Name</span> - All rights reserved
+            © 2025 <span className="font-semibold text-foreground">Dev Shah</span> - All rights reserved
           </p>
         </div>
       </footer>
